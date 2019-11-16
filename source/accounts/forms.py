@@ -6,6 +6,7 @@ from .models import Profile
 class UserCreationForm(forms.ModelForm):
     password = forms.CharField(label="Пароль", strip=False, widget=forms.PasswordInput)
     password_confirm = forms.CharField(label="Подтвердите пароль", widget=forms.PasswordInput, strip=False)
+    email = forms.EmailField(label='Email address', required=True)
 
     def clean_password_confirm(self):
         password = self.cleaned_data.get("password")
@@ -28,7 +29,6 @@ class UserCreationForm(forms.ModelForm):
 
 class UserChangeForm(forms.ModelForm):
     avatar = forms.ImageField(label='Аватар', required=False)
-    birth_date = forms.DateField(label='День рождения', input_formats=['%Y-%m-%d', '%d.%m.%Y'], required=False)
 
     def get_initial_for_field(self, field, field_name):
         if field_name in self.Meta.profile_fields:
@@ -57,9 +57,9 @@ class UserChangeForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ['first_name', 'last_name', 'email', 'avatar', 'birth_date']
-        profile_fields = ['avatar', 'birth_date']
-        labels = {'first_name': 'Имя', 'last_name': 'Фамилия', 'email': 'Email'}
+        fields = ['first_name', 'email', 'avatar']
+        profile_fields = ['avatar']
+        labels = {'first_name': 'Имя', 'email': 'Email'}
 
 
 class PasswordChangeForm(forms.ModelForm):

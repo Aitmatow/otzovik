@@ -14,7 +14,11 @@
         </div>
         <p><b>Категория:</b> {{ product.get_category_display }}</p>
         <p><b>Описание:</b> {% if product.description %}{{ product.description }} {% else %} Нет описания  {% endif %}</p>
-        <p><b>Средняя оценка:</b> {{ product.avg_rate }}</p>
+        <p><b>Средняя оценка:</b>{% for i in product.avg_rate %}
+                <span class="glyphicon glyphicon-star"></span>
+            {% endfor %} ({{product.avg_rate}})</p>
+
+
         <p><a href="{% url 'webapp:product_update' product.pk%}" class="btn btn-primary">Изменить</a></p>
         <p><a href="{% url 'webapp:product_delete' product.pk%}" class="btn btn-danger">Удалить</a></p>
     </div>
@@ -31,7 +35,7 @@
           </div>
            {% for otzyv in product.reviews.all %}
           <div class="card-body">
-            <h5 class="card-title">Отзыв от {{ otzyv.author }}</h5>
+            <h5 class="card-title">Отзыв от <a href="{% url 'accounts:detail' otzyv.author.id %}">{{ otzyv.author }}</a> </h5>
             <p class="card-text">
               <p>Почтовый адрес  : {{ otzyv.author.email }} </p>
               <p>Текст: {{ otzyv.text }} </p>
@@ -39,7 +43,7 @@
             </p>
           <a href="{% url 'webapp:review_update' otzyv.id product.pk %}" class="btn btn-primary">Изменить</a>
           <a href="{% url 'webapp:review_delete' otzyv.id product.pk %}" class="btn btn-danger">Удалить</a>
-          </div>
+          </div><hr>
            {% endfor %}
         </div>
     </div>

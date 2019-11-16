@@ -19,10 +19,25 @@
             <div class="mt-3">
                 <p><b>Имя пользователя:</b> {{ user_obj.username }}</p>
                 <p><b>Имя:</b> {{ user_obj.first_name }}</p>
-                <p><b>Фамилия:</b> {{ user_obj.last_name }}</p>
-                <p><b>Дата рождения:</b> {{ user_obj.profile.birth_date|date:'d.m.Y' }}</p>
                 <p><b>Почта:</b> {{ user_obj.email }}</p>
             </div>
+        </div>
+    </div>
+    <div class="container">
+       <div class="card text-center">
+          <div class="card-header">
+            Отзывы
+          </div>
+           {% for otzyv in reviews %}
+          <div class="card-body">
+            <p class="card-text">
+              <p>Товар: {{ otzyv.product }} </p>
+              <p>Текст: {{ otzyv.text }} </p>
+              <p>Оценка : {{ otzyv.rating }} </p>
+            </p>
+          <hr>
+          </div>
+           {% endfor %}
         </div>
     </div>
 {% endblock %}
