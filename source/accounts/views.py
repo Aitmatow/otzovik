@@ -1,4 +1,5 @@
-from django.contrib.auth.mixins import UserPassesTestMixin
+from django.contrib.auth.mixins import UserPassesTestMixin, LoginRequiredMixin
+from django.core.exceptions import PermissionDenied
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.urls import reverse
@@ -47,7 +48,7 @@ def register_view(request, *args, **kwargs):
     return render(request, 'user_create.html', context={'form': form})
 
 
-class UserDetailView(DetailView):
+class UserDetailView(LoginRequiredMixin,DetailView):
     model = User
     template_name = 'user_detail.html'
     context_object_name = 'user_obj'
@@ -56,6 +57,7 @@ class UserDetailView(DetailView):
         context = super().get_context_data()
         context['reviews'] = Review.objects.filter(author=self.request.user)
         return context
+
 
 
 class UserPersonalInfoChangeView(UserPassesTestMixin, UpdateView):

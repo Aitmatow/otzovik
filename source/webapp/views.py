@@ -2,6 +2,7 @@
 # Create your views here.
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.contrib.auth.models import User
+from django.core.exceptions import PermissionDenied
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy, reverse
@@ -45,26 +46,28 @@ class ProductCreateView(PermissionRequiredMixin, CreateView):
         return reverse('webapp:product_detail', kwargs={'pk': self.object.pk})
 
 
-class ProductUpdateView(LoginRequiredMixin, UpdateView):
+class ProductUpdateView(PermissionRequiredMixin, UpdateView):
     model = Product
     template_name = 'product/update.html'
     fields = ('name', 'category', 'description', 'photo')
     context_object_name = 'product'
+    permission_required = 'webapp.change_product'
+    permission_denied_message = '403 Доступ запрещён!'
 
     def get_success_url(self):
         return reverse('webapp:product_detail', kwargs={'pk': self.object.pk})
 
-class ProductDeleteView(LoginRequiredMixin, DeleteView):
+class ProductDeleteView(PermissionRequiredMixin, DeleteView):
     model = Product
     template_name = 'product/delete.html'
     success_url = reverse_lazy('webapp:index')
     context_object_name = 'product'
+    permission_required = 'webapp.delete_product'
+    permission_denied_message = '403 Доступ запрещён!'
 
-class ReviewCreateView(PermissionRequiredMixin,CreateView):
+class ReviewCreateView(LoginRequiredMixin,CreateView):
     model = Review
     template_name = 'review/create.html'
-    permission_required = 'webapp.add_review'
-    permission_denied_message = 'Доступ запрещен!'
     form_class = ReviewForm
 
     def get_form(self, form_class=None):
@@ -84,13 +87,10 @@ class ReviewCreateView(PermissionRequiredMixin,CreateView):
         )
         return redirect('webapp:product_detail', product.id)
 
-
-class ReviewUpdateView(PermissionRequiredMixin, UpdateView):
+class ReviewUpdateView(LoginRequiredMixin,UpdateView):
     model = Review
     template_name = 'review/update.html'
     form_class = ReviewForm
-    permission_required = 'webapp.change_review'
-    permission_denied_message = 'Доступ запрещен!'
 
 
     def get_form(self, form_class=None):
@@ -108,10 +108,20 @@ class ReviewUpdateView(PermissionRequiredMixin, UpdateView):
         review.save()
         return redirect('webapp:product_detail', product.id)
 
-class ReviewDeleteView(DeleteView):
+    def get(self, *args, **kwargs):
+        if self.request.user == Review.objects.get(pk=self.kwargs['pk']).author or self.request.user.has_perm('webapp.change_review'):
+            return super().get(*args, **kwargs)
+        raise PermissionDenied()
+
+class ReviewDeleteView(LoginRequiredMixin,DeleteView):
     model = Review
     template_name = 'review/delete.html'
     context_object_name = 'product'
 
     def get_success_url(self):
         return reverse('webapp:product_detail', kwargs={'pk': self.kwargs['id']})
+
+    def get(self, *args, **kwargs):
+        if self.request.user == Review.objects.get(pk=self.kwargs['pk']).author or self.request.user.has_perm('webapp.delete_review'):
+            return super().get(*args, **kwargs)
+        raise PermissionDenied()
