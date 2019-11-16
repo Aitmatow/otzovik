@@ -14,37 +14,46 @@
         </div>
         <p><b>Категория:</b> {{ product.get_category_display }}</p>
         <p><b>Описание:</b> {% if product.description %}{{ product.description }} {% else %} Нет описания  {% endif %}</p>
-        <p><b>Средняя оценка:</b>{% for i in product.avg_rate %}
-                <span class="glyphicon glyphicon-star"></span>
-            {% endfor %} ({{product.avg_rate}})</p>
-
-
+        <p><b>Средняя оценка: </b>{% for i in product.avg_rate %}
+                        <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+                            {% endfor %}</p>
         <p><a href="{% url 'webapp:product_update' product.pk%}" class="btn btn-primary">Изменить</a></p>
         <p><a href="{% url 'webapp:product_delete' product.pk%}" class="btn btn-danger">Удалить</a></p>
     </div>
     <div class="container">
        <div class="card text-center">
           <div class="card-header">
-              <a href="{% url 'webapp:review_create' product.pk %}" class="btn btn-primary">Добавить отзыв</a>
-        </div>
-    </div>
-    <div class="container">
-       <div class="card text-center">
-          <div class="card-header">
             Отзывы
           </div>
-           {% for otzyv in product.reviews.all %}
-          <div class="card-body">
-            <h5 class="card-title">Отзыв от <a href="{% url 'accounts:detail' otzyv.author.id %}">{{ otzyv.author }}</a> </h5>
-            <p class="card-text">
-              <p>Почтовый адрес  : {{ otzyv.author.email }} </p>
-              <p>Текст: {{ otzyv.text }} </p>
-              <p>Оценка : {{ otzyv.rating }} </p>
-            </p>
-          <a href="{% url 'webapp:review_update' otzyv.id product.pk %}" class="btn btn-primary">Изменить</a>
-          <a href="{% url 'webapp:review_delete' otzyv.id product.pk %}" class="btn btn-danger">Удалить</a>
-          </div><hr>
-           {% endfor %}
+       <div class="card text-center">
+          <div class="card-header">
+              <a href="{% url 'webapp:review_create' product.pk %}" class="btn btn-primary">Добавить отзыв</a>
         </div>
-    </div>
+       <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">Имя</th>
+          <th scope="col">Почтовый адрес</th>
+          <th scope="col">Текст</th>
+          <th scope="col">Оценка</th>
+            <th scope="col">Действия</th>
+        </tr>
+      </thead>
+      <tbody>
+      {% for otzyv in product.reviews.all %}
+        <tr>
+          <td><a href="{% url 'accounts:detail' otzyv.author.id %}">{{ otzyv.author }}</a></td>
+          <td>{{ otzyv.author.email }}</td>
+          <td>{{ otzyv.text }}</td>
+          <td>{{ otzyv.rating }}</td>
+         <td>
+          <a href="{% url 'webapp:review_update' otzyv.id product.pk %}" class="btn btn-primary">Редактировать</a>
+          <a href="{% url 'webapp:review_delete' otzyv.id product.pk %}" class="btn btn-danger">Удалить</a>
+          </td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+        </div>
+       </div>
 {% endblock %}

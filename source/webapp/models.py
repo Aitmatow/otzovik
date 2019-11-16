@@ -28,10 +28,11 @@ class Product(models.Model):
         for i in review:
             avg+=i.rating
             count+=1
+
         if count == 0:
-            return '{:.2f}'.format(avg)
+            return range(int(avg))
         else:
-            return '{:.2f}'.format(avg/count)
+            return range(int(avg/count))
 
 
 class Review(models.Model):
