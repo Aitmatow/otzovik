@@ -28,7 +28,6 @@ class Product(models.Model):
         for i in review:
             avg+=i.rating
             count+=1
-
         if count == 0:
             return range(int(avg))
         else:
@@ -43,3 +42,7 @@ class Review(models.Model):
 
     def __str__(self):
         return str(self.author) + " о товаре " + str(self.product)
+
+    @property
+    def avg_rate(self):
+        return range(self.rating)

@@ -30,9 +30,7 @@ class ProductView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data()
         product = Product.objects.get(pk=self.request.path.split('/')[-2])
-        context['form'] = ReviewForm(initial={'author':self.request.user, 'product' : product})
         return context
-
 
 
 class ProductCreateView(PermissionRequiredMixin, CreateView):
@@ -64,6 +62,7 @@ class ProductDeleteView(PermissionRequiredMixin, DeleteView):
     context_object_name = 'product'
     permission_required = 'webapp.delete_product'
     permission_denied_message = '403 Доступ запрещён!'
+
 
 class ReviewCreateView(LoginRequiredMixin,CreateView):
     model = Review

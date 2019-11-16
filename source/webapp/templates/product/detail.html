@@ -45,7 +45,9 @@
           <td><a href="{% url 'accounts:detail' otzyv.author.id %}">{{ otzyv.author }}</a></td>
           <td>{{ otzyv.author.email }}</td>
           <td>{{ otzyv.text }}</td>
-          <td>{{ otzyv.rating }}</td>
+          <td>{% for i in otzyv.avg_rate %}
+                <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+                {% endfor %}</td>
          <td>
           <a href="{% url 'webapp:review_update' otzyv.id product.pk %}" class="btn btn-primary">Редактировать</a>
           <a href="{% url 'webapp:review_delete' otzyv.id product.pk %}" class="btn btn-danger">Удалить</a>
