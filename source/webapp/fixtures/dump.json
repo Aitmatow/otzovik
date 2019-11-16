@@ -1,0 +1,52 @@
+[
+{
+  "model": "webapp.product",
+  "pk": 1,
+  "fields": {
+    "name": "\u042f\u0431\u043b\u043e\u043a\u043e",
+    "category": "food",
+    "description": "",
+    "photo": ""
+  }
+},
+{
+  "model": "webapp.product",
+  "pk": 2,
+  "fields": {
+    "name": "\u0414\u0436\u0438\u043d\u0441\u044b",
+    "category": "clothes",
+    "description": "",
+    "photo": ""
+  }
+},
+{
+  "model": "webapp.product",
+  "pk": 3,
+  "fields": {
+    "name": "\u041a\u0430\u043c\u0438\u043d",
+    "category": "household",
+    "description": "",
+    "photo": ""
+  }
+},
+{
+  "model": "webapp.review",
+  "pk": 1,
+  "fields": {
+    "author": 1,
+    "product": 1,
+    "text": "\u0412\u043a\u0443\u0441\u043d\u043e\u0435 \u044f\u0431\u043b\u043e\u043a\u043e",
+    "rating": 5
+  }
+},
+{
+  "model": "webapp.review",
+  "pk": 2,
+  "fields": {
+    "author": 1,
+    "product": 2,
+    "text": "\u0423\u0436\u0430\u0441\u043d\u044b\u0435 \u0434\u0436\u0438\u043d\u0441\u044b \u043a\u0438\u0442\u0430\u0439\u0441\u043a\u043e\u0433\u043e \u043f\u0440\u043e\u0438\u0437\u0432\u043e\u0434\u0441\u0442\u0432\u0430",
+    "rating": 1
+  }
+}
+]
