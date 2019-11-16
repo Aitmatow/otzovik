@@ -20,6 +20,17 @@ class Product(models.Model):
     def __str__(self):
         return self.name
 
+    @property
+    def avg_rate(self):
+        avg = 0
+        count = 0
+        review = Review.objects.filter(product__name=self.name).filter(product__category=self.category).filter(product__description=self.description)
+        for i in review:
+            avg+=i.rating
+            count+=1
+        return '{:.2f}'.format(avg/count)
+
+
 class Review(models.Model):
     author = models.ForeignKey(User, related_name='reviews', on_delete=models.CASCADE, verbose_name='Автор')
     product = models.ForeignKey('Product', related_name='reviews', on_delete=models.CASCADE, verbose_name='Товар')
